@@ -1,12 +1,16 @@
 ﻿// Adobe Premiere Simple Slideshow Generator
 
 main();
-
+function abc(a,b) {
+    if (a.name > b.name) 
+        return 1;
+       return -1;
+    }
 // main function where everything is checked and ran
 function main() {
-var sequence_name1 = "IkeaTest1";
+var sequence_name1 = "IKEA_ABC_00";
 // have the user select a folder where their images are located
-var importFolder = new Folder("C:\\Users\\Gustaw\\Downloads\\Filemail.com files 2020-8-1 tsoymvknmyfribe\\Results_JPG");
+var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG");
 //importFolder = Folder.selectDialog("Open a folder");
 
 // if folder is not selected, tell them to run script again
@@ -47,19 +51,26 @@ project.importFiles(imageFiles);
 var imageFolder = projectItem.createBin("Folder" + sequence_name1);
 
 
-project.sequences[0].clone();
-var seq = project.sequences[1];
-// after importing our images, we need to locate them in the project
+var seq = null;
+//project.sequences[0].clone();
+for (var i = 0; i<project.sequences.length; i++)
+{
+    seq = project.sequences[i];
+    if (seq.name === "source_sequence")
+        {
+         break
+         }
+}
 
-seq.name = sequence_name1;
+// after importing our images, we need to locate them in the project
 var importedImages = getImageProjectItems(projectItem);
 
+importedImages.sort(abc)
 
-// get list of tracks
-var videoTracks = seq.videoTracks;
+
 
 // get the first video track (where all the images will be)
-var videoTrackOne = videoTracks[1];
+var videoTrackOne = seq.videoTracks[1];
 
 var time = new Time();
 time.ticks = seq.timebase.toString();
@@ -70,8 +81,7 @@ var startTime = 0;
 // create a new time object for easier calculations later
 var thisTime = new Time();
 thisTime.seconds = parseInt(seconds);
-var c= projectItem.children[2].name;
-alert(c);
+
 
 for(var e = 0; e < importedImages.length; e++) {
     importedImages[e].moveBin(imageFolder);
@@ -195,7 +205,7 @@ function getImageProjectItems(projectItem) {
 // get all the image files in our project panel (jpg, jpeg, and png)
 for(var i = 0; i < projectItem.children.numItems; i++) {
     thisName = projectItem.children[i].name;
-    if(thisName.substring(thisName.length - 3, thisName.length).toLowerCase() == "jpg") {
+    if(thisName.substring(thisName.length - 3, thisName.length).toLowerCase() === "jpg") {
         projectImages.push(projectItem.children[i]);
         }
     }
@@ -208,7 +218,7 @@ function getImagePaths(files) {
     var paths = [];
     for(var i = 0; i < files.length; i++) {
         thisName = files[i].name;
-        if(thisName.substring(thisName.length-3, thisName.length).toLowerCase() == "jpg") {
+        if(thisName.substring(thisName.length-3, thisName.length).toLowerCase() === "jpg") {
             paths.push(files[i].fsName);
             }
         }
