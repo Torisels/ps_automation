@@ -115,7 +115,7 @@ file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
 var n = parseInt(content) + 1;
-// var n = 7;
+// var n = 19;
 // n = 9;
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]
