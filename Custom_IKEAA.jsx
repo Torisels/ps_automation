@@ -1,5 +1,5 @@
-const positions = {1: [500, 200], 2: [300, 400, 2200, 400], 3: [300, 400, 2200, 400, 3000, 400]}
-const scales = {1: [55], 2: [38, 45], 3: [40, 40, 45]}
+const positions = {1: [422, 363], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
+const scales = {1: [60], 2: [38, 45], 3: [40, 40, 45]}
 
 /*Preserve settings*/
 var original_unit = preferences.rulerUnits;
@@ -10,7 +10,8 @@ var original_display_dialogs = app.displayDialogs;
 "json2.js"
 
 
-var file_to_read = File(app.activeDocument.path + "/output.json");
+// var file_to_read = File(app.activeDocument.path + "/result.json");
+var file_to_read = File("C:\\Users\\Gustaw\\PycharmProjects\\ikea_generator" + "\\result.json");
 var input_json = null;
 var content;
 if (file_to_read !== false) {// if it is really there
@@ -20,7 +21,7 @@ if (file_to_read !== false) {// if it is really there
     file_to_read.close(); // always close files after reading
 //
 } else {
-    alert("Bah!"); // if something went wrong
+    alert("Error when reading JSON file!"); // if something went wrong
 }
 
 
@@ -81,7 +82,7 @@ function placeImage(Image, Size, x, y) {
     } catch (e) {
         alert(e + ': on line ' + e.line);
     }
-}
+};
 
 function placeFile(placeFile) {
     var desc21 = new ActionDescriptor();
@@ -94,7 +95,7 @@ function placeFile(placeFile) {
 
     desc21.putObject(charIDToTypeID('Ofst'), charIDToTypeID('Ofst'), desc22);
     executeAction(charIDToTypeID('Plc '), desc21, DialogModes.NO);
-}
+};
 
 function saveTxt(txt) {
     var Path = app.activeDocument.path;
@@ -109,37 +110,34 @@ function saveTxt(txt) {
     saveFile.close();
 }
 
-function saveDocumentAsJPGandClose() {
-    var doc = app.activeDocument;
-    var fileName = doc.name.split('.')[0];
-
-    var jpgOptions = new JPEGSaveOptions();
-    jpgOptions.quality = 12;
-    jpgOptions.embedColorProfile = true;
-    jpgOptions.formatOptions = FormatOptions.PROGRESSIVE;
-    jpgOptions.scans = 5;
-    jpgOptions.matte = MatteType.NONE;
-
-    doc.saveAs(new File(app.activeDocument.path + '/Results_JPG/' + fileName + '.jpg'), jpgOptions);
-    doc.close();
-}
-
 var file_to_read = File(app.activeDocument.path + "/current_state.txt");
 file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
-// var n = parseInt(content) + 1;
-var n = 21;
+var n = parseInt(content) + 1;
+// var n = 7;
 // n = 9;
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]
     var product_count = products.length;
-    var f = new File(app.activeDocument.path + "/template_" + product_count + ".psd");
+    var adder = "";
+    if (product_count == 1) {
+        if (products[0].more_options == false) {
+            adder = "_nmo";
+        }
+    }
+    var f = new File(app.activeDocument.path + "/template_" + product_count + adder + ".psd");
     app.open(f);
     for (var i = 0; i < product_count; i++) {
         var product = products[i]
-
         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+
+        if (product.special_offer == true)
+        {
+            var offer_layer = app.activeDocument.layers.getByName("specialOffer1");
+            //offer_layer.visible = true;
+        }
+
         var price_layer = set.layers.getByName("price");
         price_layer.textItem.contents = createStringForPrices(product.eur, product.usd, product.cny);
 
@@ -147,27 +145,58 @@ for (var k = n; k < n + 1; k++) {
         name_layer.textItem.contents = product.name;
 
         var code_layer = set.layers.getByName("code");
-        code_layer.textItem.contents = product.number;
+        code_layer.textItem.contents = product.ikea_id;
 
         var desc_layer = set.layers.getByName("description");
-        desc_layer.textItem.contents = product.desc;
+        desc_layer.textItem.contents = product.description;
 
-        var logoFile = app.activeDocument.path + "/Dywany/" + product.file_name; // Watermark file should be large for resize down works better than up
-        var LogoSize = scales[product_count][i]; // percent of document height to resize Watermark to
+        var logoFile = app.activeDocument.path + "/input_photos/" + product.file_name; // Watermark file should be large for resize down works better than up
+        var LogoSize = product.scale; // percent of document height to resize Watermark to
         var xpos = positions[product_count][2 * i];
         var ypos = positions[product_count][2 * i + 1];
 
         placeImage(logoFile, LogoSize, xpos, ypos);
 
     }
-    var SaveFile = File(app.activeDocument.path + "/" + products[0].order_num + "_" + products[0].name + ".psd");
-    if (SaveFile.exists) SaveFile.remove();
+    var SaveFile = File(app.activeDocument.path + "/" + products[0].id + "_" + products[0].ikea_id + ".psd");
+    if (SaveFile.exists) {
+        SaveFile.remove();
+    }
     SavePSD(SaveFile);
     saveTxt(n);
 }
 
-/*Restore settings*/
-preferences.rulerUnits = original_unit;
-preferences.typeUnits = original_type_unit;
-app.displayDialogs = original_display_dialogs;
-/******************/
+// for(var i = 0 ; i <=2; i++)
+// {
+//      var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+// var code_layer = set.layers.getByName("code");
+//
+//
+//
+// var desc_layer = set.layers.getByName("description");
+// desc_layer.textItem.contents += "\r"+code_layer.textItem.contents;
+// code_layer.textItem.contents = "";
+//
+// }
+
+// app.activeDocument.close();
+//
+//
+// var doc = app.activeDocument;
+// var fileName = doc.name.split('.')[0];
+// app.displayDialogs = DialogModes.NO;
+// var jpgOptions = new JPEGSaveOptions();
+// jpgOptions.quality = 12;
+// jpgOptions.embedColorProfile = true;
+// jpgOptions.formatOptions = FormatOptions.PROGRESSIVE;
+// jpgOptions.scans = 5;
+// jpgOptions.matte = MatteType.NONE;
+//
+// doc.saveAs(new File( app.activeDocument.path + '/Results_JPG/' + fileName + '.jpg'), jpgOptions);
+// doc.close();
+//
+// /*Restore settings*/
+// preferences.rulerUnits = original_unit;
+// preferences.typeUnits = original_type_unit;
+// app.displayDialogs = original_display_dialogs;
+// /******************/
