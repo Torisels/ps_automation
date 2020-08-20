@@ -10,7 +10,7 @@ df = Ikea.prepare_df()
 count_frame = df.groupby("name").count()
 count_frame = count_frame["Placement"].to_dict()
 
-df = df.loc[139:175]
+df = df.loc[61:175]
 print(df)
 
 

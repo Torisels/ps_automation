@@ -36,7 +36,7 @@ class Item:
             self.special_offer = True
         else:
             self.special_offer = False
-        self.description = self.make_description_doormats2(description_1, description_2, description_3)
+        self.description = self.make_description_doormats3(description_1, description_2, description_3)
 
     @staticmethod
     def make_description_doormats(d1: str, d2: str, d3: str):
@@ -52,6 +52,14 @@ class Item:
         d3 = d3.split(" ")
         final = f"{d1} {d3[0].replace('CM', ' cm')}\r"
         final += f"{' '.join(d3[1:])}"
+        return final
+
+    def make_description_doormats3(self, d1: str, d2: str, d3: str):
+        self.lines = 3
+        self.description_2 = ""
+        d3 = d3.split(" ")
+        final = f"{d1} {d3[0].replace('CM', ' cm')}\r"
+        final += f"{(' '.join(d3[3:])).lower()}\r{(' '.join(d3[1:3])).lower()}"
         return final
 
     @staticmethod

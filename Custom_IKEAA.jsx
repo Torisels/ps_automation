@@ -1,5 +1,5 @@
-const positions = {1: [510, 491], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
-const scales = {1: [60], 2: [38, 45], 3: [40, 40, 45]}
+const positions = {1: [505, 990], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
+const scales = {1: [49], 2: [38, 45], 3: [40, 40, 45]}
 
 
 const collection_name = "HFB13";
@@ -116,8 +116,8 @@ var file_to_read = File(app.activeDocument.path + "/current_state.txt");
 file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
-// var n = parseInt(content) + 1;
-var n = 0;
+var n = parseInt(content) + 1;
+// var n = 0;
 // n = 9;
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]

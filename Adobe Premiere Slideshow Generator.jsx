@@ -111,7 +111,7 @@ var opacityParam = videoComponentObjs[1].opacity;
 fadeOpacity(opacityParam, 1, trackItems[i], parseInt(seconds));
 
 videoComponentObjs[0].scale.setValue(45);
-videoComponentObjs[0].position.setValue([0.7, 0.7]);
+videoComponentObjs[0].position.setValue([0.5, 0.4]);
 
 }
 } 
