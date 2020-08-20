@@ -1,6 +1,8 @@
-const positions = {1: [422, 363], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
+const positions = {1: [510, 491], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
 const scales = {1: [60], 2: [38, 45], 3: [40, 40, 45]}
 
+
+const collection_name = "HFB13";
 /*Preserve settings*/
 var original_unit = preferences.rulerUnits;
 var original_type_unit = preferences.typeUnits;
@@ -11,7 +13,7 @@ var original_display_dialogs = app.displayDialogs;
 
 
 // var file_to_read = File(app.activeDocument.path + "/result.json");
-var file_to_read = File("C:\\Users\\Gustaw\\PycharmProjects\\ikea_generator" + "\\result.json");
+var file_to_read = File("C:\\Users\\Gustaw\\PycharmProjects\\ikea_generator\\result.json");
 var input_json = null;
 var content;
 if (file_to_read !== false) {// if it is really there
@@ -95,7 +97,7 @@ function placeFile(placeFile) {
 
     desc21.putObject(charIDToTypeID('Ofst'), charIDToTypeID('Ofst'), desc22);
     executeAction(charIDToTypeID('Plc '), desc21, DialogModes.NO);
-};
+}
 
 function saveTxt(txt) {
     var Path = app.activeDocument.path;
@@ -114,8 +116,8 @@ var file_to_read = File(app.activeDocument.path + "/current_state.txt");
 file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
-var n = parseInt(content) + 1;
-// var n = 19;
+// var n = parseInt(content) + 1;
+var n = 0;
 // n = 9;
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]
@@ -125,6 +127,9 @@ for (var k = n; k < n + 1; k++) {
         if (products[0].more_options == false) {
             adder = "_nmo";
         }
+        if (products[0].lines == 2) {
+            adder += "_2lines";
+        }
     }
     var f = new File(app.activeDocument.path + "/template_" + product_count + adder + ".psd");
     app.open(f);
@@ -132,8 +137,7 @@ for (var k = n; k < n + 1; k++) {
         var product = products[i]
         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
 
-        if (product.special_offer == true)
-        {
+        if (product.special_offer == true) {
             var offer_layer = app.activeDocument.layers.getByName("specialOffer1");
             //offer_layer.visible = true;
         }
@@ -150,8 +154,8 @@ for (var k = n; k < n + 1; k++) {
         var desc_layer = set.layers.getByName("description");
         desc_layer.textItem.contents = product.description;
 
-        var logoFile = app.activeDocument.path + "/input_photos/" + product.file_name; // Watermark file should be large for resize down works better than up
-        var LogoSize = product.scale; // percent of document height to resize Watermark to
+        var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
+        var LogoSize = scales[1][0]; // percent of document height to resize Watermark to
         var xpos = positions[product_count][2 * i];
         var ypos = positions[product_count][2 * i + 1];
 
@@ -196,7 +200,4 @@ for (var k = n; k < n + 1; k++) {
 // doc.close();
 //
 // /*Restore settings*/
-// preferences.rulerUnits = original_unit;
-// preferences.typeUnits = original_type_unit;
-// app.displayDialogs = original_display_dialogs;
-// /******************/
+// preferences.rulerUnits = 

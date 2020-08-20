@@ -8,9 +8,9 @@ function abc(a,b) {
     }
 // main function where everything is checked and ran
 function main() {
-var sequence_name1 = "IKEA_ABC_00";
+var sequence_name1 = "IKEA_ABC_002";
 // have the user select a folder where their images are located
-var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG");
+var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\HFB13");
 //importFolder = Folder.selectDialog("Open a folder");
 
 // if folder is not selected, tell them to run script again
@@ -38,7 +38,7 @@ if(imageFiles.length < 1) {
     }
 
 // let the user decide how many seconds each image will be
-var seconds = 7;
+var seconds = 4;
 
 // project setup
 var project = app.project;
@@ -56,11 +56,12 @@ var seq = null;
 for (var i = 0; i<project.sequences.length; i++)
 {
     seq = project.sequences[i];
-    if (seq.name === "source_sequence")
+    if (seq.name === "source_sequence Copy")
         {
-         break
+         break;
          }
 }
+
 
 // after importing our images, we need to locate them in the project
 var importedImages = getImageProjectItems(projectItem);
@@ -110,6 +111,7 @@ var opacityParam = videoComponentObjs[1].opacity;
 fadeOpacity(opacityParam, 1, trackItems[i], parseInt(seconds));
 
 videoComponentObjs[0].scale.setValue(45);
+videoComponentObjs[0].position.setValue([0.7, 0.7]);
 
 }
 } 
@@ -146,9 +148,7 @@ function getComponentObjs(components) {
     var opacityComponent;
     var motionComponent;
     // search for the opacity and motion components for this given image
-    var motionObj = {
-        
-        };
+    var motionObj = {};
     
     for(var i = 0; i < components.numItems; i++) {
     if(components[i].displayName == "Opacity") {
@@ -166,6 +166,7 @@ var opacityObj = {
     for(var e = 0; e < motionComponent.properties.numItems; e++) {
         switch(motionComponent.properties[e].displayName) {
                 case "Position":
+                    var a = motionComponent.properties[e].getValue();
                     motionObj.position = motionComponent.properties[e];
                 break;
                 case "Scale":
