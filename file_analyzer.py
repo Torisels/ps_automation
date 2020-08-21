@@ -10,22 +10,19 @@ df = Ikea.prepare_df()
 count_frame = df.groupby("name").count()
 count_frame = count_frame["Placement"].to_dict()
 
-df = df.loc[61:175]
 print(df)
 
 
 items = []
 counter = 1
 print(f"Analyzing {Ikea.COLLECTION_NAME}")
-print("Photos that are missing: ")
 for index, row in df.iterrows():
-    items.append([Item(number=index,  **row.to_dict())])
-    p = Ikea.INPUT_PHOTOS_PATH / Path(items[-1][0].file_name)
+    p = Ikea.INPUT_PHOTOS_PATH / Path(Item.get_file_name(**row.to_dict()))
     n = row["name"]
     if type(n) != str:
         n = ""
     if not p.exists():
         print(
-            f"{counter:2}. ORIGIN: {row['HUB']} || PE(filename): {items[-1][0].file_name:15} || NAME: {n:10} || ART no: {row['ART no']:12} || "
+            f"{counter:2}. ORIGIN: {row['HUB']} || PE(filename): {Item.get_file_name(**row.to_dict()).lstrip():15} || NAME: {n:10} || ART no: {str(row['ART no']).ljust(12)} || "
             f"STATUS: {row['status']} ")
         counter +=1

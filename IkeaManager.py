@@ -3,9 +3,8 @@ import pandas as pd
 
 
 class IkeaManager:
-    WORKING_NUMBER = 13
-    SHEET_NAME = "02 PA02"
-    COLLECTION_NAME = "HFB13"
+    WORKING_NUMBER = 4
+
     EXCEL_PATH = r"C:\Users\Gustaw\Documents\Book3-final.xlsx"
 
     RENAMING_DICT = {"NAME": "name", "How to order": "badge_type", "Product type": "description_1",
@@ -14,7 +13,7 @@ class IkeaManager:
                      "Art. / SPR number": "ikea_id", "(DE) EUR": "eur", "(US) USD": "usd", "(CN) CNY": "cny",
                      "PE": "product_id"}
 
-    INPUT_PHOTOS_PATH = Path("E:/Ikea_Projekt/input_photos/")
+    INPUT_PHOTOS_PATH = Path(r"E:\IKEA_ALL_PICS\Pictures for packshots - per team\\")
 
     def __init__(self):
         self.SHEET_NAME = self.generate_sheet_name()
@@ -33,8 +32,8 @@ class IkeaManager:
         xls = pd.ExcelFile(self.EXCEL_PATH)
         df = pd.read_excel(xls, self.SHEET_NAME)
 
-        df.drop(columns=["PA", "\"colorswatch\"", "Packshot type"], inplace=True)
-        df.drop(df.columns[list(df.columns).index("comment") + 1:], axis=1, inplace=True)
+        df.drop(columns=["PA", "Packshot type"], inplace=True)
+        df.drop(df.columns[list(df.columns).index("comment") + 2:], axis=1, inplace=True)
 
         df.rename(columns=self.RENAMING_DICT, inplace=True)
         return df

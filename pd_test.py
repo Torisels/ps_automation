@@ -11,7 +11,8 @@ df = Ikea.prepare_df()
 count_frame = df.groupby("name").count()
 count_frame = count_frame["Placement"].to_dict()
 
-data = df.loc[176:177]
+# data = df.loc[139:175]
+data = df.loc[df["Placement"]==175]
 print(data)
 
 items = [[] for _ in range(len(data))]

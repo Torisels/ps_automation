@@ -9,7 +9,7 @@ class ItemEncoder(JSONEncoder):
 
 class Item:
     def __init__(self, number, product_id, name, description_1, description_2, description_3, ikea_id, eur, usd, cny,
-                 badge_type, scale=58, *args, **kwargs):
+                 badge_type, comment, scale=58, *args, **kwargs):
         self.id = number
         self.file_name = str(product_id) + ".jpg"
         self.name = name
@@ -31,6 +31,9 @@ class Item:
         self.scale = scale
         self.more_options = False
         self.lines = 2
+        self.psd_name = str(self.id) + '_' + self.ikea_id + '.psd'
+        self.new_name = str(self.id) + '_' + comment
+        self.ikea_id = comment
 
         if badge_type == "Special offer":
             self.special_offer = True
@@ -71,6 +74,11 @@ class Item:
         s[0] += " cm"
         d3 = " ".join(s)
         return d1 + "\r" + d3
+
+    @staticmethod
+    def get_file_name(product_id: str, **kwargs):
+        return str(product_id) + ".jpg"
+
 
     @staticmethod
     def price_check(price: float):

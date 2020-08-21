@@ -116,9 +116,34 @@ var file_to_read = File(app.activeDocument.path + "/current_state.txt");
 file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
-var n = parseInt(content) + 1;
-// var n = 0;
+// var n = parseInt(content) + 1;
+var n = 0;
 // n = 9;
+// for (var k = n; k < n + 1; k++) {
+//     var products = input_json[k]
+//     var product_count = products.length;
+//
+//     var f = new File(app.activeDocument.path + "/"+products[0].psd_name);
+//     app.open(f);
+//     for (var i = 0; i < product_count; i++) {
+//         var product = products[i]
+//         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+//
+//
+//
+//         var code_layer = set.layers.getByName("code");
+//         code_layer.textItem.contents = product.ikea_id;
+//
+//
+//
+//     }
+//     var SaveFile = File(app.activeDocument.path + "/" + products[0].new_name+".psd");
+//     if (SaveFile.exists) {
+//         SaveFile.remove();
+//     }
+//     SavePSD(SaveFile);
+//     saveTxt(n);
+// }
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]
     var product_count = products.length;
@@ -169,6 +194,7 @@ for (var k = n; k < n + 1; k++) {
     SavePSD(SaveFile);
     saveTxt(n);
 }
+
 
 // for(var i = 0 ; i <=2; i++)
 // {
