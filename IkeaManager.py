@@ -5,19 +5,21 @@ import pandas as pd
 class IkeaManager:
     WORKING_NUMBER = 4
 
-    EXCEL_PATH = r"C:\Users\Gustaw\Documents\Book3-final.xlsx"
+    EXCEL_PATH = r"C:\Users\Gustaw\Documents\BookTu.xlsx"
 
     RENAMING_DICT = {"NAME": "name", "How to order": "badge_type", "Product type": "description_1",
                      "MATERIAL": "description_2",
                      "Short product description (like: colour, material: wood, plastic, metal, any additional necessary information": "description_3",
-                     "Art. / SPR number": "ikea_id", "(DE) EUR": "eur", "(US) USD": "usd", "(CN) CNY": "cny",
+                     "Art. / SPR number": "ikea_id", "(DE) EUR": "eur", "(US) USD": "usd", "(CN) CNY": "cny", '(GB) GBP': "gbp",
                      "PE": "product_id"}
 
     INPUT_PHOTOS_PATH = Path(r"E:\IKEA_ALL_PICS\Pictures for packshots - per team\\")
 
     def __init__(self):
         self.SHEET_NAME = self.generate_sheet_name()
+        # self.SHEET_NAME = "Celebration"
         self.COLLECTION_NAME = self.generate_collection_name()
+        # self.COLLECTION_NAME = "Celebration"
         self.INPUT_PHOTOS_PATH = self.INPUT_PHOTOS_PATH / Path(self.COLLECTION_NAME)
 
     @classmethod

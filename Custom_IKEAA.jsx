@@ -1,8 +1,8 @@
-const positions = {1: [505, 990], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
-const scales = {1: [49], 2: [38, 45], 3: [40, 40, 45]}
+const positions = {1: [1845, 732], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
+const scales = {1: [55.5], 2: [38, 45], 3: [40, 40, 45]}
 
 
-const collection_name = "HFB13";
+const collection_name = "HFB04";
 /*Preserve settings*/
 var original_unit = preferences.rulerUnits;
 var original_type_unit = preferences.typeUnits;
@@ -116,8 +116,8 @@ var file_to_read = File(app.activeDocument.path + "/current_state.txt");
 file_to_read.open('r'); // open it
 content = file_to_read.read(); // read it
 file_to_read.close(); // always close files after reading
-// var n = parseInt(content) + 1;
-var n = 0;
+var n = parseInt(content) + 1;
+// var n = 0;
 // n = 9;
 // for (var k = n; k < n + 1; k++) {
 //     var products = input_json[k]
@@ -161,14 +161,13 @@ for (var k = n; k < n + 1; k++) {
     for (var i = 0; i < product_count; i++) {
         var product = products[i]
         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+        var dd = app.activeDocument.layers.getByName("availablenow1");
+        var offer_layer = app.activeDocument.layers.getByName("specialOffer1");
 
-        if (product.special_offer == true) {
-            var offer_layer = app.activeDocument.layers.getByName("specialOffer1");
-            //offer_layer.visible = true;
-        }
+
 
         var price_layer = set.layers.getByName("price");
-        price_layer.textItem.contents = createStringForPrices(product.eur, product.usd, product.cny);
+        price_layer.textItem.contents = product.price_string;
 
         var name_layer = set.layers.getByName("name");
         name_layer.textItem.contents = product.name;
@@ -179,15 +178,25 @@ for (var k = n; k < n + 1; k++) {
         var desc_layer = set.layers.getByName("description");
         desc_layer.textItem.contents = product.description;
 
-        var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
+        // var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
+        var logoFile = "E:\\IKEA_ALL_PICS\\Pictures for packshots - per team\\" + collection_name + "\\" + product.file_name; // Watermark file should be large for resize down works better than up
         var LogoSize = scales[1][0]; // percent of document height to resize Watermark to
         var xpos = positions[product_count][2 * i];
         var ypos = positions[product_count][2 * i + 1];
 
         placeImage(logoFile, LogoSize, xpos, ypos);
 
+          if (product.special_offer == true) {
+            offer_layer.visible = true;
+            dd.visible = false;
+        }
+        else{
+            offer_layer.visible = false;
+            dd.visible = true;
+        }
+
     }
-    var SaveFile = File(app.activeDocument.path + "/" + products[0].id + "_" + products[0].ikea_id + ".psd");
+    var SaveFile = File(app.activeDocument.path + "/" + products[0].psd_name);
     if (SaveFile.exists) {
         SaveFile.remove();
     }

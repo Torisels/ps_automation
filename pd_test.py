@@ -11,8 +11,8 @@ df = Ikea.prepare_df()
 count_frame = df.groupby("name").count()
 count_frame = count_frame["Placement"].to_dict()
 
-# data = df.loc[139:175]
-data = df.loc[df["Placement"]==175]
+data = df.loc[75:]
+# data = df
 print(data)
 
 items = [[] for _ in range(len(data))]
@@ -20,7 +20,7 @@ items = [[] for _ in range(len(data))]
 dp_index = 0
 
 for index, row in data.iterrows():
-    item = Item(number=index, **row.to_dict())
+    item = Item(number=index, description_2 = "", gbp=-1, **row.to_dict())
     p = Ikea.INPUT_PHOTOS_PATH / Path(item.file_name)
     if not p.exists():
         print(f"Missing: {item.file_name}")

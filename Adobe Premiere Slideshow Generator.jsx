@@ -10,7 +10,7 @@ function abc(a,b) {
 function main() {
 var sequence_name1 = "IKEA_ABC_002";
 // have the user select a folder where their images are located
-var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\HFB13");
+var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\HFB04");
 //importFolder = Folder.selectDialog("Open a folder");
 
 // if folder is not selected, tell them to run script again
@@ -111,7 +111,7 @@ var opacityParam = videoComponentObjs[1].opacity;
 fadeOpacity(opacityParam, 1, trackItems[i], parseInt(seconds));
 
 videoComponentObjs[0].scale.setValue(45);
-videoComponentObjs[0].position.setValue([0.5, 0.4]);
+videoComponentObjs[0].position.setValue([0.4, 0.43]);
 
 }
 } 

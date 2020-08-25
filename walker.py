@@ -11,7 +11,7 @@ import os
 # rem_dirs = walker.next()[1]
 
 
-PATH = f'E:\IKEA_ALL_PICS\Pictures for packshots - per team\Celebration collection'
+PATH = f'E:\IKEA_ALL_PICS\Pictures for packshots - per team\HFB 16'
 # The current working directory
 dest_dir = PATH
 # The generator that walks over the folder tree

@@ -17,12 +17,12 @@ items = []
 counter = 1
 print(f"Analyzing {Ikea.COLLECTION_NAME}")
 for index, row in df.iterrows():
-    p = Ikea.INPUT_PHOTOS_PATH / Path(Item.get_file_name(**row.to_dict()))
+    p = Ikea.INPUT_PHOTOS_PATH / Path(Item.get_file_name(**row.to_dict()).strip())
     n = row["name"]
     if type(n) != str:
         n = ""
     if not p.exists():
         print(
             f"{counter:2}. ORIGIN: {row['HUB']} || PE(filename): {Item.get_file_name(**row.to_dict()).lstrip():15} || NAME: {n:10} || ART no: {str(row['ART no']).ljust(12)} || "
-            f"STATUS: {row['status']} ")
+            f"STATUS: {row['status']} || PLACEMENT: {row['Placement']} ")
         counter +=1

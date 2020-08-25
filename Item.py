@@ -9,6 +9,7 @@ class ItemEncoder(JSONEncoder):
 
 class Item:
     def __init__(self, number, product_id, name, description_1, description_2, description_3, ikea_id, eur, usd, cny,
+                 gbp,
                  badge_type, comment, scale=58, *args, **kwargs):
         self.id = number
         self.file_name = str(product_id) + ".jpg"
@@ -20,6 +21,7 @@ class Item:
         else:
             self.name = ""
 
+        self.price_line_count = 0
         self.description_1 = description_1
         self.description_2 = description_2
         self.description_3 = description_3
@@ -28,18 +30,54 @@ class Item:
         self.eur = self.price_check(eur)
         self.usd = self.price_check(usd)
         self.cny = self.price_check(cny)
+        self.gbp = self.price_check(gbp)
+        self.price_string = self.generate_price_string()
         self.scale = scale
         self.more_options = False
         self.lines = 2
-        self.psd_name = str(self.id) + '_' + self.ikea_id + '.psd'
-        self.new_name = str(self.id) + '_' + comment
-        self.ikea_id = comment
+
+        self.psd_name = str(self.id).zfill(2) + '_' + self.name + '.psd'
+        # self.new_name = str(self.id) + '_' + comment
+        # self.ikea_id = comment
 
         if badge_type == "Special offer":
             self.special_offer = True
         else:
             self.special_offer = False
-        self.description = self.make_description_doormats3(description_1, description_2, description_3)
+        self.description = self.make_description_hfb4(description_1, description_2, description_3)
+
+    def make_description_hfb42(self, d1: str, d2: str, d3: str):
+        self.lines = 2
+        if type(d3) == str:
+            d3 = d3.strip()
+            if 'x' in d3:
+                d4 = d3.split(" ")
+                d4[1] += " cm"
+
+        return d1 + ' ' + d4[1]+"\r"+ str(d4[0])
+
+
+    def make_description_hfb4(self, d1: str, d2: str, d3: str):
+        self.lines = 2
+        d4 = list()
+        d4.append("")
+        if type(d3) == str:
+            d3 = d3.strip()
+            if 'x' in d3:
+                d4 = d3.split(" ")
+                d4[0] += " cm"
+                d3 = " ".join(d4[1:])
+        return d1 + '\r' + d4[0]+" "+ str(d3)
+
+    def make_description_hfb5(self, d1: str, d2: str, d3: str):
+        self.lines = 2
+        if type(d3) == str:
+            d3 = d3.strip()
+            if 'x' in d3:
+                d4 = d3.split(" ")
+                d4[0] += " cm"
+                d3 = " ".join(d4)
+        return d1 + '\r' + str(d3)
 
     @staticmethod
     def make_description_doormats(d1: str, d2: str, d3: str):
@@ -77,8 +115,7 @@ class Item:
 
     @staticmethod
     def get_file_name(product_id: str, **kwargs):
-        return str(product_id) + ".jpg"
-
+        return str(product_id).strip() + ".jpg"
 
     @staticmethod
     def price_check(price: float):
@@ -90,4 +127,30 @@ class Item:
 
         if price.is_integer():
             return int(price)
+
+        if math.isnan(price):
+            return -1
+
         return price
+
+    def generate_price_string(self):
+        line_counter = 0
+        eur = ""
+        usd = ""
+        cn = ""
+        gbp = ""
+        if self.eur != -1:
+            eur = f"(DE) {self.eur} EUR\r"
+            line_counter += 1
+        if self.usd != -1:
+            usd = f"(US) {self.usd} USD\r"
+            line_counter += 1
+        if self.cny != -1:
+            cn = f"(CN) {self.cny} CNY\r"
+            line_counter += 1
+        if self.gbp != -1:
+            gbp = f"(GB) {self.gbp} GBP\r"
+            line_counter += 1
+
+        self.price_line_count = line_counter
+        return eur + usd + cn + gbp
