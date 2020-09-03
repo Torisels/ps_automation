@@ -8,9 +8,14 @@ function abc(a,b) {
     }
 // main function where everything is checked and ran
 function main() {
-var sequence_name1 = "IKEA_ABC_002";
+    
+var collection_name = "HFB02";    
+//var to_search = "source_sequence Copy 02";
+var to_search = collection_name;
+
+var sequence_name1 = "HFB_02_F";
 // have the user select a folder where their images are located
-var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\HFB04");
+var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\"+collection_name);
 //importFolder = Folder.selectDialog("Open a folder");
 
 // if folder is not selected, tell them to run script again
@@ -56,13 +61,22 @@ var seq = null;
 for (var i = 0; i<project.sequences.length; i++)
 {
     seq = project.sequences[i];
-    if (seq.name === "source_sequence Copy")
+    if (seq.name === to_search)
         {
          break;
          }
 }
+//seq.clone();
+seq.name = collection_name;
 
-
+//for (var i = 0; i<project.sequences.length; i++)
+//{
+   // seq = project.sequences[i];
+    //if (seq.name === "source_sequence_xxx Copy")
+       // {
+        // break;
+         //}
+//}
 // after importing our images, we need to locate them in the project
 var importedImages = getImageProjectItems(projectItem);
 
@@ -110,9 +124,20 @@ var videoComponentObjs = getComponentObjs(components);
 var opacityParam = videoComponentObjs[1].opacity;
 fadeOpacity(opacityParam, 1, trackItems[i], parseInt(seconds));
 
-videoComponentObjs[0].scale.setValue(45);
-videoComponentObjs[0].position.setValue([0.4, 0.43]);
+    if ((i==0)||(i==trackItems.length-1) )
+    {
+        videoComponentObjs[0].scale.setValue(145);
+        videoComponentObjs[0].position.setValue([0.55, 0.5]);
+    }
+    else if(i==trackItems.length-2){
+        videoComponentObjs[0].scale.setValue(145);
+        }
+else{
+      videoComponentObjs[0].scale.setValue(45);
+    }
 
+//videoComponentObjs[0].position.setValue([0.45, 0.42 ]);
+//videoComponentObjs[0].position.setValue([0.45, 0.42 ]);
 }
 } 
 

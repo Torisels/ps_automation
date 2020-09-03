@@ -2,7 +2,7 @@ const positions = {1: [1845, 732], 2: [432, 894, 2080, 398], 3: [211, 923, 1246,
 const scales = {1: [55.5], 2: [38, 45], 3: [40, 40, 45]}
 
 
-const collection_name = "HFB04";
+const collection_name = "HFB03";
 /*Preserve settings*/
 var original_unit = preferences.rulerUnits;
 var original_type_unit = preferences.typeUnits;
@@ -147,23 +147,28 @@ var n = parseInt(content) + 1;
 for (var k = n; k < n + 1; k++) {
     var products = input_json[k]
     var product_count = products.length;
+   // alert(product_count);
     var adder = "";
     if (product_count == 1) {
         if (products[0].more_options == false) {
             adder = "_nmo";
         }
-        if (products[0].lines == 2) {
-            adder += "_2lines";
-        }
     }
+
+    if (products[0].lines == 2) {
+        adder += "_2lines";
+    }
+
+    var eee = app.activeDocument.path + "/template_" + product_count + adder + ".psd"
+
     var f = new File(app.activeDocument.path + "/template_" + product_count + adder + ".psd");
+
     app.open(f);
     for (var i = 0; i < product_count; i++) {
         var product = products[i]
         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
-        var dd = app.activeDocument.layers.getByName("availablenow1");
-        var offer_layer = app.activeDocument.layers.getByName("specialOffer1");
-
+        var availableNowLayer = app.activeDocument.layers.getByName("availablenow"+ (i + 1).toString());
+        var specialOfferLayer = app.activeDocument.layers.getByName("specialOffer"+ (i + 1).toString());
 
 
         var price_layer = set.layers.getByName("price");
@@ -179,20 +184,19 @@ for (var k = n; k < n + 1; k++) {
         desc_layer.textItem.contents = product.description;
 
         // var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
-        var logoFile = "E:\\IKEA_ALL_PICS\\Pictures for packshots - per team\\" + collection_name + "\\" + product.file_name; // Watermark file should be large for resize down works better than up
+        var logoFile = "E:\\IKEA_ALL_PICS\\Pictures for packshots - per team\\" + product.collection_name + "\\" + product.file_name; // Watermark file should be large for resize down works better than up
         var LogoSize = scales[1][0]; // percent of document height to resize Watermark to
         var xpos = positions[product_count][2 * i];
         var ypos = positions[product_count][2 * i + 1];
 
         placeImage(logoFile, LogoSize, xpos, ypos);
 
-          if (product.special_offer == true) {
-            offer_layer.visible = true;
-            dd.visible = false;
-        }
-        else{
-            offer_layer.visible = false;
-            dd.visible = true;
+        if (product.special_offer == true) {
+            specialOfferLayer.visible = true;
+            availableNowLayer.visible = false;
+        } else {
+            specialOfferLayer.visible = false;
+            availableNowLayer.visible = true;
         }
 
     }

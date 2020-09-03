@@ -3,9 +3,9 @@ import pandas as pd
 
 
 class IkeaManager:
-    WORKING_NUMBER = 4
+    WORKING_NUMBER = 18
 
-    EXCEL_PATH = r"C:\Users\Gustaw\Documents\BookTu.xlsx"
+    EXCEL_PATH = r"C:\Users\Gustaw\Downloads\Book5.xlsx"
 
     RENAMING_DICT = {"NAME": "name", "How to order": "badge_type", "Product type": "description_1",
                      "MATERIAL": "description_2",
@@ -16,10 +16,10 @@ class IkeaManager:
     INPUT_PHOTOS_PATH = Path(r"E:\IKEA_ALL_PICS\Pictures for packshots - per team\\")
 
     def __init__(self):
-        self.SHEET_NAME = self.generate_sheet_name()
-        # self.SHEET_NAME = "Celebration"
-        self.COLLECTION_NAME = self.generate_collection_name()
-        # self.COLLECTION_NAME = "Celebration"
+        # self.SHEET_NAME = self.generate_sheet_name()
+        self.SHEET_NAME = "FARMHOUSE"
+        # self.COLLECTION_NAME = self.generate_collection_name()
+        self.COLLECTION_NAME = "Farmhouse"
         self.INPUT_PHOTOS_PATH = self.INPUT_PHOTOS_PATH / Path(self.COLLECTION_NAME)
 
     @classmethod
@@ -32,7 +32,9 @@ class IkeaManager:
 
     def prepare_df(self):
         xls = pd.ExcelFile(self.EXCEL_PATH)
+
         df = pd.read_excel(xls, self.SHEET_NAME)
+
 
         df.drop(columns=["PA", "Packshot type"], inplace=True)
         df.drop(df.columns[list(df.columns).index("comment") + 2:], axis=1, inplace=True)

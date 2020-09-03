@@ -18,8 +18,10 @@ dest_dir = PATH
 walker = os.walk(PATH)
 for d in walker:
     for file in d[2]:
-        shutil.copy(d[0] + os.sep + file, dest_dir)
-
+        try:
+            shutil.copy(d[0] + os.sep + file, dest_dir)
+        except Exception as e:
+            print(e)
 
 # for data in walker:
 #     for files in data[2]:

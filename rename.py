@@ -1,4 +1,4 @@
-DIR_PATH = r"E:\IKEA_ALL_PICS\Pictures for packshots - per team\Celebration\\"
+DIR_PATH = r"E:\IKEA_ALL_PICS\Pictures for packshots - per team\HFB14\\"
 
 import os
 
