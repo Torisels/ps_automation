@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 from IkeaManager import IkeaManager
 
+START = 111
+RANGE = 4
+
 
 def excel_num_to_pandas_num(begining, range):
     return begining - 2, begining + range - 3
@@ -17,7 +20,7 @@ count_frame = df.groupby("name").count()
 count_frame = count_frame["Placement"].to_dict()
 # data = df
 
-b,e = excel_num_to_pandas_num(48, 14)
+b, e = excel_num_to_pandas_num(START, RANGE)
 data = df.loc[b:e]
 print(f"{data[['Placement', 'name', 'product_id']]} ")
 
@@ -26,10 +29,13 @@ items = [[] for _ in range(len(data))]
 dp_index = 0
 
 for index, row in data.iterrows():
+    if "description_2" not in row:
+        row["description_2"] = ""
+
     if "gbp" in row:
-        item = Item(number=index, description_2="", collection_num=Ikea.WORKING_NUMBER, **row.to_dict())
+        item = Item(number=index, collection_num=Ikea.WORKING_NUMBER, **row.to_dict())
     else:
-        item = Item(number=index, description_2="", gbp=-1, collection_num=Ikea.WORKING_NUMBER, **row.to_dict())
+        item = Item(number=index, gbp=-1, collection_num=Ikea.WORKING_NUMBER, **row.to_dict())
     p = Ikea.INPUT_PHOTOS_PATH / Path(item.file_name)
     if not p.exists():
         print(f"Missing: {item.file_name}")

@@ -2,18 +2,26 @@
 
 main();
 function abc(a,b) {
-    if (a.name > b.name) 
+     var c = a.name;
+     var d = b.name;
+     
+     c = c.split("_")[0];
+     d = d.split("_")[0];
+     c = parseInt(c);
+     d = parseInt(d);
+    
+    if (c>d) 
         return 1;
        return -1;
     }
 // main function where everything is checked and ran
 function main() {
     
-var collection_name = "HFB02";    
+var collection_name = "HFB7_3";    
 //var to_search = "source_sequence Copy 02";
 var to_search = collection_name;
 
-var sequence_name1 = "HFB_02_F";
+var sequence_name1 = collection_name + "xd2";
 // have the user select a folder where their images are located
 var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\"+collection_name);
 //importFolder = Folder.selectDialog("Open a folder");
@@ -31,7 +39,7 @@ var files = importFolder.getFiles();
 if(files.length < 1) {
         alert("No files detected", "Select a valid folder");
         main();
-    } 
+    }  
 
 // gets the paths for all the images in the folder
 var imageFiles = getImagePaths(files);

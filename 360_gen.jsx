@@ -10,9 +10,9 @@ function sort_by_name(a, b) {
 
 function main() {
 
-    var photo_name = "12";
-    var to_search = "12";
-    var sequence_name1 = "360_12";
+    var photo_name = "KMP20-001";
+    var to_search = photo_name;
+    var sequence_name1 =photo_name;
 
 // have the user select a folder where their images are located
     var importFolder = new Folder("E:\\Ikea_Projekt\\Results_JPG\\360\\" + photo_name);
@@ -36,7 +36,7 @@ function main() {
     }
 
 // let the user decide how many seconds each image will be
-    var seconds = 0.14;
+    var seconds = 0.15;
 
 // project setup
     var project = app.project;
@@ -85,13 +85,13 @@ function main() {
 
 // create a new time object for easier calculations later
     var thisTime = new Time();
-    thisTime.seconds = parseInt(seconds);
+    thisTime.seconds = parseFloat(seconds);
 
 
     for (var e = 0; e < importedImages.length; e++) {
         importedImages[e].moveBin(imageFolder); 
         videoTrackOne.insertClip(importedImages[e], startTime);
-        startTime += parseFloat(seconds) + frameLength;
+        startTime += parseFloat(seconds) ;
         try {
             videoTrackOne.clips[e].end = videoTrackOne.clips[e].start.seconds + parseFloat(seconds);
         } catch (e) {

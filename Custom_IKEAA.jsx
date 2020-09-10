@@ -1,8 +1,10 @@
-const positions = {1: [1845, 732], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
-const scales = {1: [55.5], 2: [38, 45], 3: [40, 40, 45]}
+const positions = {1: [800, 628], 2: [432, 894, 2080, 398], 3: [211, 923, 1246, 585, 2319, 383]}
+const scales = {1: [100], 2: [40, 40], 3: [38, 38, 38]}
 
 
 const collection_name = "HFB03";
+
+
 /*Preserve settings*/
 var original_unit = preferences.rulerUnits;
 var original_type_unit = preferences.typeUnits;
@@ -14,6 +16,7 @@ var original_display_dialogs = app.displayDialogs;
 
 // var file_to_read = File(app.activeDocument.path + "/result.json");
 var file_to_read = File("C:\\Users\\Gustaw\\PycharmProjects\\ikea_generator\\result.json");
+// var file_to_read = File("C:\\Users\\Gustaw\\PycharmProjects\\ikea_generator\\numbers.json");
 var input_json = null;
 var content;
 if (file_to_read !== false) {// if it is really there
@@ -112,101 +115,143 @@ function saveTxt(txt) {
     saveFile.close();
 }
 
-var file_to_read = File(app.activeDocument.path + "/current_state.txt");
-file_to_read.open('r'); // open it
-content = file_to_read.read(); // read it
-file_to_read.close(); // always close files after reading
-var n = parseInt(content) + 1;
-// var n = 0;
-// n = 9;
+// var file_to_read = File(app.activeDocument.path + "/current_state.txt");
+// file_to_read.open('r'); // open it
+// content = file_to_read.read(); // read it
+// file_to_read.close(); // always close files after reading
+// var n = parseInt(content) + 1;
+// // var n = 0;
+// // n = 9;
+// // for (var k = n; k < n + 1; k++) {
+// //     var products = input_json[k]
+// //     var product_count = products.length;
+// //
+// //     var f = new File(app.activeDocument.path + "/"+products[0].psd_name);
+// //     app.open(f);
+// //     for (var i = 0; i < product_count; i++) {
+// //         var product = products[i]
+// //         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+// //
+// //
+// //
+// //         var code_layer = set.layers.getByName("code");
+// //         code_layer.textItem.contents = product.ikea_id;
+// //
+// //
+// //
+// //     }
+// //     var SaveFile = File(app.activeDocument.path + "/" + products[0].new_name+".psd");
+// //     if (SaveFile.exists) {
+// //         SaveFile.remove();
+// //     }
+// //     SavePSD(SaveFile);
+// //     saveTxt(n);
+// // }
 // for (var k = n; k < n + 1; k++) {
 //     var products = input_json[k]
 //     var product_count = products.length;
+//     // alert(product_count);
+//     var adder = "";
+//     if (product_count == 1) {
+//         if (products[0].more_options == false) {
+//             adder = "_nmo";
+//         }
+//     }
 //
-//     var f = new File(app.activeDocument.path + "/"+products[0].psd_name);
+//
+//     if (products[0].lower == true) {
+//         adder += "_lower";
+//     }
+//
+//
+//     if (products[0].lines == 2) {
+//         adder += "_2lines";
+//     }
+//
+//     var eee = app.activeDocument.path + "/template_" + product_count + adder + ".psd"
+//     alert(eee);
+//
+//
+//     var f = new File(app.activeDocument.path + "/template_" + product_count + adder + ".psd");
+//
 //     app.open(f);
 //     for (var i = 0; i < product_count; i++) {
 //         var product = products[i]
 //         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
+//         var availableNowLayer = app.activeDocument.layers.getByName("availablenow" + (i + 1).toString());
+//         var specialOfferLayer = app.activeDocument.layers.getByName("specialOffer" + (i + 1).toString());
 //
+//         var price_layer = set.layers.getByName("price");
+//         price_layer.textItem.contents = product.price_string;
 //
+//         var name_layer = set.layers.getByName("name");
+//         name_layer.textItem.contents = product.name;
 //
 //         var code_layer = set.layers.getByName("code");
 //         code_layer.textItem.contents = product.ikea_id;
 //
+//         var desc_layer = set.layers.getByName("description");
+//         desc_layer.textItem.contents = product.description;
 //
+//
+//         // var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
+//         var logoFile = "E:\\IKEA_ALL_PICS\\Pictures for packshots - per team\\" + product.collection_name + "\\" + product.file_name; // Watermark file should be large for resize down works better than up
+//         var LogoSize = scales[product_count][i]; // percent of document height to resize Watermark to
+//         var xpos = positions[product_count][2 * i];
+//         var ypos = positions[product_count][2 * i + 1];
+//
+//         placeImage(logoFile, LogoSize, xpos, ypos);
+//
+//         if (product.special_offer == true) {
+//             specialOfferLayer.visible = true;
+//             availableNowLayer.visible = false;
+//         } else {
+//             specialOfferLayer.visible = false;
+//             availableNowLayer.visible = true;
+//         }
 //
 //     }
-//     var SaveFile = File(app.activeDocument.path + "/" + products[0].new_name+".psd");
+//     var SaveFile = File(app.activeDocument.path + "/" + products[0].psd_name);
 //     if (SaveFile.exists) {
 //         SaveFile.remove();
 //     }
 //     SavePSD(SaveFile);
 //     saveTxt(n);
 // }
-for (var k = n; k < n + 1; k++) {
-    var products = input_json[k]
-    var product_count = products.length;
-   // alert(product_count);
-    var adder = "";
-    if (product_count == 1) {
-        if (products[0].more_options == false) {
-            adder = "_nmo";
-        }
-    }
-
-    if (products[0].lines == 2) {
-        adder += "_2lines";
-    }
-
-    var eee = app.activeDocument.path + "/template_" + product_count + adder + ".psd"
-
-    var f = new File(app.activeDocument.path + "/template_" + product_count + adder + ".psd");
-
-    app.open(f);
-    for (var i = 0; i < product_count; i++) {
-        var product = products[i]
+var product_count = app.activeDocument.layerSets.length;
+for (var i = 0; i < product_count; i++) {
         var set = app.activeDocument.layerSets.getByName("product" + (i + 1).toString());
-        var availableNowLayer = app.activeDocument.layers.getByName("availablenow"+ (i + 1).toString());
-        var specialOfferLayer = app.activeDocument.layers.getByName("specialOffer"+ (i + 1).toString());
-
-
-        var price_layer = set.layers.getByName("price");
-        price_layer.textItem.contents = product.price_string;
-
-        var name_layer = set.layers.getByName("name");
-        name_layer.textItem.contents = product.name;
-
-        var code_layer = set.layers.getByName("code");
-        code_layer.textItem.contents = product.ikea_id;
-
-        var desc_layer = set.layers.getByName("description");
-        desc_layer.textItem.contents = product.description;
-
-        // var logoFile = app.activeDocument.path + "/input_photos/" + collection_name + "/" + product.file_name; // Watermark file should be large for resize down works better than up
-        var logoFile = "E:\\IKEA_ALL_PICS\\Pictures for packshots - per team\\" + product.collection_name + "\\" + product.file_name; // Watermark file should be large for resize down works better than up
-        var LogoSize = scales[1][0]; // percent of document height to resize Watermark to
-        var xpos = positions[product_count][2 * i];
-        var ypos = positions[product_count][2 * i + 1];
-
-        placeImage(logoFile, LogoSize, xpos, ypos);
-
-        if (product.special_offer == true) {
-            specialOfferLayer.visible = true;
-            availableNowLayer.visible = false;
-        } else {
-            specialOfferLayer.visible = false;
-            availableNowLayer.visible = true;
-        }
+        var code_layer = set.layers.getByName("price");
+        var text_price = code_layer.textItem.contents.split("\r")
+        var juan = text_price[1].split(" ")[1]
+        var usd = text_price[2].split(" ")[1]
+        var text = text_price[0]+"\r(US) " + juan + " USD\r" + "(CN) " + usd + " CNY";
+        code_layer.textItem.contents = text;
 
     }
-    var SaveFile = File(app.activeDocument.path + "/" + products[0].psd_name);
+
+var SaveFile = File(app.activeDocument.path + "/" + app.activeDocument.name);
     if (SaveFile.exists) {
         SaveFile.remove();
     }
     SavePSD(SaveFile);
-    saveTxt(n);
-}
+
+
+// var doc = app.activeDocument;
+// var fileName = doc.name.split('.')[0];
+// var collection_name = fileName.split('_')[2];
+// app.displayDialogs = DialogModes.NO;
+// var jpgOptions = new JPEGSaveOptions();
+// jpgOptions.quality = 12;
+// jpgOptions.embedColorProfile = true;
+// jpgOptions.formatOptions = FormatOptions.PROGRESSIVE;
+// jpgOptions.scans = 5;
+// jpgOptions.matte = MatteType.NONE;
+//
+// doc.saveAs(new File(app.activeDocument.path + '/Results_JPG/' + collection_name + "/" + fileName + '.jpg'), jpgOptions);
+// //doc.close();
+//
+// app.displayDialogs = DialogModes.YES;
 
 
 // for(var i = 0 ; i <=2; i++)
